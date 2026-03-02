@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Editar App - {{ slug }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="url"],
+        textarea,
+        input[type="color"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 80px;
+        }
+        .row {
+            display: flex;
+            gap: 16px;
+        }
+        .row > div {
+            flex: 1;
+        }
+        .servico-item,
+        .depoimento-item {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 8px;
+            background: #fafafa;
+        }
+        button {
+            margin-top: 16px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #1976d2;
+            color: #fff;
+            font-size: 14px;
+        }
+        button.secundario {
+            background: #777;
+        }
+        .msg-erro {
+            color: #c62828;
+            margin-top: 10px;
+        }
+        .msg-sucesso {
+            color: #2e7d32;
+            margin-top: 10px;
+        }
+        .slug-label {
+            font-size: 13px;
+            color: #555;
+        }
+        .info-atual {
+            font-size: 13px;
+            color: #555;
+        }
+        .imagens-atual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .imagens-atual img {
+            max-width: 140px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        .secao-imagens {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Editar App: {{ slug }}</h1>
+    <p class="slug-label">Endereço do seu app: <strong>/app/{{ slug }}</strong></p>
+
+    <form id="form-editar">
+        <h2>Dados principais</h2>
+
+        <label>Nome do profissional
+            <input type="text" name="nome_profissional" required />
+        </label>
+
+        <label>Profissão
+            <input type="text" name="profissao" required />
+        </label>
+
+        <label>Descrição breve (sobre você)
+            <textarea name="descricao" required></textarea>
+        </label>
+
+        <div class="row">
+            <div>
+                <label>WhatsApp (apenas números com DDD)
+                    <input type="text" name="whatsapp" required />
+                </label>
+            </div>
+            <div>
+                <label>Instagram (apenas usuário, sem @)
+                    <input type="text" name="instagram" />
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Site (URL)
+                    <input type="url" name="site" />
+                </label>
+            </div>
+            <div>
+                <label>Endereço (opcional)
+                    <input type="text" name="endereco" />
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Cor primária
+                    <input type="color" name="cor_primaria" value="#1E88E5" />
+                </label>
+            </div>
+            <div>
+                <label>Cor secundária
+                    <input type="color" name="cor_secundaria" value="#FFFFFF" />
+                </label>
+            </div>
+        </div>
+
+        <h2>Oferta principal (destaque de venda)</h2>
+
+        <label>Título da oferta
+            <input type="text" name="oferta_titulo" />
+        </label>
+
+        <label>Descrição da oferta
+            <textarea name="oferta_descricao"></textarea>
+        </label>
+
+        <label>Preço da oferta (texto livre)
+            <input type="text" name="oferta_preco" />
+        </label>
+
+        <h2>Serviços</h2>
+        <div id="lista-servicos"></div>
+        <button type="button" class="secundario" id="btn-add-servico">Adicionar serviço</button>
+
+        <h2>Depoimentos de clientes (texto)</h2>
+        <div id="lista-depoimentos"></div>
+        <button type="button" class="secundario" id="btn-add-depoimento">Adicionar depoimento</button>
+
+        <div>
+            <button type="submit">Salvar alterações de texto</button>
+        </div>
+
+        <div class="msg-erro" id="msg-erro"></div>
+        <div class="msg-sucesso" id="msg-sucesso"></div>
+        <div id="link-app"></div>
+    </form>
+
+    <div class="secao-imagens">
+        <h2>Logo e fotos do portfólio</h2>
+        <p class="info-atual">Veja abaixo as imagens atuais do seu app. Você pode enviar novas imagens para trocar.</p>
+
+        <div id="imagens-atual" class="imagens-atual"></div>
+
+        <form id="form-imagens" enctype="multipart/form-data">
+            <label>Nova logo do profissional (opcional)
+                <input type="file" name="logo_file" accept="image/*" />
+            </label>
+
+            <label>Nova foto 1 do portfólio (opcional)
+                <input type="file" name="portfolio1" accept="image/*" />
+            </label>
+            <label>Nova foto 2 do portfólio (opcional)
+                <input type="file" name="portfolio2" accept="image/*" />
+            </label>
+            <label>Nova foto 3 do portfólio (opcional)
+                <input type="file" name="portfolio3" accept="image/*" />
+            </label>
+
+            <button type="submit">Salvar imagens</button>
+            <div class="msg-erro" id="msg-erro-img"></div>
+            <div class="msg-sucesso" id="msg-sucesso-img"></div>
+        </form>
+    </div>
+
+    <script>
+        const slug = "{{ slug }}";
+        const apiUrl = `/api/apps/${slug}`;
+        const apiImgUrl = `/api/apps/${slug}/imagens`;
+
+        const form = document.getElementById("form-editar");
+        const msgErro = document.getElementById("msg-erro");
+        const msgSucesso = document.getElementById("msg-sucesso");
+        const linkApp = document.getElementById("link-app");
+
+        const listaServicos = document.getElementById("lista-servicos");
+        const btnAddServico = document.getElementById("btn-add-servico");
+
+        const listaDepoimentos = document.getElementById("lista-depoimentos");
+        const btnAddDepoimento = document.getElementById("btn-add-depoimento");
+
+        const imagensAtualDiv = document.getElementById("imagens-atual");
+        const formImagens = document.getElementById("form-imagens");
+        const msgErroImg = document.getElementById("msg-erro-img");
+        const msgSucessoImg = document.getElementById("msg-sucesso-img");
+
+        let servicos = [];
+        let depoimentos = [];
+        let dadosAtuais = null;
+
+        function renderServicos() {
+            listaServicos.innerHTML = "";
+            servicos.forEach((s, idx) => {
+                const div = document.createElement("div");
+                div.className = "servico-item";
+                div.innerHTML = `
+                    <label>Nome do serviço
+                        <input type="text" value="${s.nome || ''}" data-idx="${idx}" data-campo="nome" />
+                    </label>
+                    <label>Descrição
+                        <textarea data-idx="${idx}" data-campo="descricao">${s.descricao || ""}</textarea>
+                    </label>
+                    <label>Preço (texto livre)
+                        <input type="text" value="${s.preco || ''}" data-idx="${idx}" data-campo="preco" />
+                    </label>
+                    <button type="button" data-idx="${idx}" class="btn-remover-servico">Remover</button>
+                `;
+                listaServicos.appendChild(div);
+            });
+        }
+
+        function renderDepoimentos() {
+            listaDepoimentos.innerHTML = "";
+            depoimentos.forEach((d, idx) => {
+                const div = document.createElement("div");
+                div.className = "depoimento-item";
+                div.innerHTML = `
+                    <label>Nome do cliente
+                        <input type="text" value="${d.nome || ''}" data-idx="${idx}" data-campo="nome" />
+                    </label>
+                    <label>Depoimento
+                        <textarea data-idx="${idx}" data-campo="texto">${d.texto || ""}</textarea>
+                    </label>
+                    <button type="button" data-idx="${idx}" class="btn-remover-depoimento">Remover</button>
+                `;
+                listaDepoimentos.appendChild(div);
+            });
+        }
+
+        function renderImagensAtuais() {
+            imagensAtualDiv.innerHTML = "";
+            if (!dadosAtuais) return;
+
+            if (dadosAtuais.logo_url) {
+                const div = document.createElement("div");
+                div.innerHTML = `<strong>Logo atual:</strong><br><img src="${dadosAtuais.logo_url}" alt="Logo atual">`;
+                imagensAtualDiv.appendChild(div);
+            }
+
+            if (dadosAtuais.portfolio && dadosAtuais.portfolio.length) {
+                const div = document.createElement("div");
+                div.innerHTML = `<strong>Fotos do portfólio atuais:</strong><br>`;
+                dadosAtuais.portfolio.forEach((p) => {
+                    if (p.tipo === "imagem") {
+                        const img = document.createElement("img");
+                        img.src = p.url;
+                        img.alt = p.titulo || "Foto portfólio";
+                        div.appendChild(img);
+                    }
+                });
+                imagensAtualDiv.appendChild(div);
+            }
+        }
+
+        btnAddServico.addEventListener("click", () => {
+            servicos.push({ nome: "", descricao: "", preco: "" });
+            renderServicos();
+        });
+
+        listaServicos.addEventListener("input", (e) => {
+            const idx = e.target.getAttribute("data-idx");
+            const campo = e.target.getAttribute("data-campo");
+            if (idx !== null && campo) {
+                servicos[idx][campo] = e.target.value;
+            }
+        });
+
+        listaServicos.addEventListener("click", (e) => {
+            if (e.target.classList.contains("btn-remover-servico")) {
+                const idx = e.target.getAttribute("data-idx");
+                servicos.splice(idx, 1);
+                renderServicos();
+            }
+        });
+
+        btnAddDepoimento.addEventListener("click", () => {
+            depoimentos.push({ nome: "", texto: "" });
+            renderDepoimentos();
+        });
+
+        listaDepoimentos.addEventListener("input", (e) => {
+            const idx = e.target.getAttribute("data-idx");
+            const campo = e.target.getAttribute("data-campo");
+            if (idx !== null && campo) {
+                depoimentos[idx][campo] = e.target.value;
+            }
+        });
+
+        listaDepoimentos.addEventListener("click", (e) => {
+            if (e.target.classList.contains("btn-remover-depoimento")) {
+                const idx = e.target.getAttribute("data-idx");
+                depoimentos.splice(idx, 1);
+                renderDepoimentos();
+            }
+        });
+
+        async function carregarDados() {
+            msgErro.textContent = "";
+            try {
+                const resp = await fetch(apiUrl);
+                if (!resp.ok) {
+                    msgErro.textContent = "Não foi possível carregar os dados deste app.";
+                    return;
+                }
+                const data = await resp.json();
+                dadosAtuais = data;
+
+                form.nome_profissional.value = data.nome_profissional || "";
+                form.profissao.value = data.profissao || "";
+                form.descricao.value = data.descricao || "";
+                form.whatsapp.value = data.whatsapp || "";
+                form.instagram.value = data.instagram || "";
+                form.site.value = data.site || "";
+                form.endereco.value = data.endereco || "";
+                form.cor_primaria.value = data.cor_primaria || "#1E88E5";
+                form.cor_secundaria.value = data.cor_secundaria || "#FFFFFF";
+
+                form.oferta_titulo.value = data.oferta_titulo || "";
+                form.oferta_descricao.value = data.oferta_descricao || "";
+                form.oferta_preco.value = data.oferta_preco || "";
+
+                servicos = data.servicos || [];
+                depoimentos = data.depoimentos || [];
+
+                renderServicos();
+                renderDepoimentos();
+                renderImagensAtuais();
+
+                const urlApp = `${window.location.origin}/app/${data.slug}`;
+                linkApp.innerHTML = `<p>Ver app publicado: <a href="${urlApp}" target="_blank">${urlApp}</a></p>`;
+            } catch (err) {
+                console.error(err);
+                msgErro.textContent = "Erro ao carregar dados do app.";
+            }
+        }
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            msgErro.textContent = "";
+            msgSucesso.textContent = "";
+
+            if (!servicos.length) {
+                msgErro.textContent = "Adicione pelo menos um serviço.";
+                return;
+            }
+
+            const payload = {
+                nome_profissional: form.nome_profissional.value,
+                profissao: form.profissao.value,
+                descricao: form.descricao.value,
+                whatsapp: form.whatsapp.value,
+                instagram: form.instagram.value || null,
+                site: form.site.value || null,
+                endereco: form.endereco.value || null,
+                cor_primaria: form.cor_primaria.value,
+                cor_secundaria: form.cor_secundaria.value,
+                oferta_titulo: form.oferta_titulo.value || null,
+                oferta_descricao: form.oferta_descricao.value || null,
+                oferta_preco: form.oferta_preco.value || null,
+                servicos: servicos,
+                depoimentos: depoimentos
+            };
+
+            try {
+                const resp = await fetch(apiUrl, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!resp.ok) {
+                    const errData = await resp.json().catch(() => ({}));
+                    msgErro.textContent = errData.detail || "Erro ao salvar alterações.";
+                    return;
+                }
+
+                msgSucesso.textContent = "Alterações de texto salvas com sucesso.";
+                await carregarDados();
+            } catch (err) {
+                console.error(err);
+                msgErro.textContent = "Erro ao salvar alterações (falha de rede).";
+            }
+        });
+
+        formImagens.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            msgErroImg.textContent = "";
+            msgSucessoImg.textContent = "";
+
+            const formData = new FormData(formImagens);
+
+            try {
+                const resp = await fetch(apiImgUrl, {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!resp.ok) {
+                    const errData = await resp.json().catch(() => ({}));
+                    msgErroImg.textContent = errData.detail || "Erro ao salvar imagens.";
+                    return;
+                }
+
+                msgSucessoImg.textContent = "Imagens atualizadas com sucesso.";
+                await carregarDados();
+                formImagens.reset();
+            } catch (err) {
+                console.error(err);
+                msgErroImg.textContent = "Erro ao salvar imagens (falha de rede).";
+            }
+        });
+
+        // Carrega dados ao abrir página
+        carregarDados();
+    </script>
+</body>
+</html>

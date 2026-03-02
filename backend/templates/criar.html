@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Criar App do Profissional</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="url"],
+        textarea,
+        input[type="color"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 80px;
+        }
+        .row {
+            display: flex;
+            gap: 16px;
+        }
+        .row > div {
+            flex: 1;
+        }
+        .servico-item,
+        .depoimento-item {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 8px;
+            background: #fafafa;
+        }
+        button {
+            margin-top: 16px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #1976d2;
+            color: #fff;
+            font-size: 14px;
+        }
+        button.secundario {
+            background: #777;
+        }
+        .msg-erro {
+            color: #c62828;
+            margin-top: 10px;
+        }
+        .msg-sucesso {
+            color: #2e7d32;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Criar App do Profissional Autônomo</h1>
+    <p>Preencha as informações abaixo. No final, você terá um app com:</p>
+    <ul>
+        <li>Destaque de oferta principal</li>
+        <li>Lista de serviços com botão de agendamento via WhatsApp</li>
+        <li>Portfólio com fotos</li>
+        <li>Depoimentos de clientes</li>
+    </ul>
+
+    <form id="form-criar">
+        <h2>Dados principais</h2>
+
+        <label>Slug (endereço do app) – ex: meu-salao-bela
+            <input type="text" name="slug" required />
+        </label>
+
+        <label>Nome do profissional
+            <input type="text" name="nome_profissional" required />
+        </label>
+
+        <label>Profissão
+            <input type="text" name="profissao" placeholder="Ex: Cabeleireira, Personal Trainer, Fotógrafo" required />
+        </label>
+
+        <label>Descrição breve (sobre você)
+            <textarea name="descricao" required></textarea>
+        </label>
+
+        <div class="row">
+            <div>
+                <label>WhatsApp (apenas números com DDD) – ex: 11999998888
+                    <input type="text" name="whatsapp" required />
+                </label>
+            </div>
+            <div>
+                <label>Instagram (apenas usuário, sem @)
+                    <input type="text" name="instagram" placeholder="seuusuario" />
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Site (URL)
+                    <input type="url" name="site" placeholder="https://..." />
+                </label>
+            </div>
+            <div>
+                <label>Endereço (opcional)
+                    <input type="text" name="endereco" />
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Cor primária
+                    <input type="color" name="cor_primaria" value="#1E88E5" />
+                </label>
+            </div>
+            <div>
+                <label>Cor secundária
+                    <input type="color" name="cor_secundaria" value="#FFFFFF" />
+                </label>
+            </div>
+        </div>
+
+        <label>Logo do profissional (imagem)
+            <input type="file" name="logo_file" accept="image/*" />
+        </label>
+
+        <h2>Oferta principal (destaque de venda)</h2>
+        <p>Use isso para destacar um pacote principal ou condição especial.</p>
+
+        <label>Título da oferta
+            <input type="text" name="oferta_titulo" placeholder="Ex: Pacote de corte + hidratação" />
+        </label>
+
+        <label>Descrição da oferta
+            <textarea name="oferta_descricao" placeholder="Explique rapidamente o que está incluso, para quem é, etc."></textarea>
+        </label>
+
+        <label>Preço da oferta (texto livre)
+            <input type="text" name="oferta_preco" placeholder="Ex: R$ 197,00 ou A partir de R$ 80,00" />
+        </label>
+
+        <h2>Serviços</h2>
+        <p>Adicione os serviços que você oferece. Cada um terá um botão de agendar pelo WhatsApp.</p>
+
+        <div id="lista-servicos"></div>
+        <button type="button" id="btn-add-servico">Adicionar serviço</button>
+
+        <input type="hidden" name="servicos_json" id="servicos_json" />
+
+        <h2>Portfólio (fotos)</h2>
+        <p>Envie até 3 fotos que representem bem seu trabalho.</p>
+        <label>Foto 1
+            <input type="file" name="portfolio1" accept="image/*" />
+        </label>
+        <label>Foto 2
+            <input type="file" name="portfolio2" accept="image/*" />
+        </label>
+        <label>Foto 3
+            <input type="file" name="portfolio3" accept="image/*" />
+        </label>
+
+        <h2>Depoimentos de clientes</h2>
+        <p>Coloque falas reais de clientes para aumentar a confiança.</p>
+
+        <div id="lista-depoimentos"></div>
+        <button type="button" class="secundario" id="btn-add-depoimento">Adicionar depoimento</button>
+
+        <input type="hidden" name="depoimentos_json" id="depoimentos_json" />
+
+        <div>
+            <button type="submit">Criar App</button>
+        </div>
+
+        <div class="msg-erro" id="msg-erro"></div>
+        <div class="msg-sucesso" id="msg-sucesso"></div>
+        <div id="link-app"></div>
+    </form>
+
+    <script>
+        const listaServicos = document.getElementById("lista-servicos");
+        const btnAddServico = document.getElementById("btn-add-servico");
+        const servicosJsonInput = document.getElementById("servicos_json");
+
+        const listaDepoimentos = document.getElementById("lista-depoimentos");
+        const btnAddDepoimento = document.getElementById("btn-add-depoimento");
+        const depoimentosJsonInput = document.getElementById("depoimentos_json");
+
+        let servicos = [];
+        let depoimentos = [];
+
+        function renderServicos() {
+            listaServicos.innerHTML = "";
+            servicos.forEach((s, idx) => {
+                const div = document.createElement("div");
+                div.className = "servico-item";
+                div.innerHTML = `
+                    <label>Nome do serviço
+                        <input type="text" value="${s.nome}" data-idx="${idx}" data-campo="nome" />
+                    </label>
+                    <label>Descrição
+                        <textarea data-idx="${idx}" data-campo="descricao">${s.descricao || ""}</textarea>
+                    </label>
+                    <label>Preço (texto livre)
+                        <input type="text" value="${s.preco || ""}" data-idx="${idx}" data-campo="preco" />
+                    </label>
+                    <button type="button" data-idx="${idx}" class="btn-remover-servico">Remover</button>
+                `;
+                listaServicos.appendChild(div);
+            });
+
+            // Atualizar hidden input
+            servicosJsonInput.value = JSON.stringify(servicos);
+        }
+
+        function renderDepoimentos() {
+            listaDepoimentos.innerHTML = "";
+            depoimentos.forEach((d, idx) => {
+                const div = document.createElement("div");
+                div.className = "depoimento-item";
+                div.innerHTML = `
+                    <label>Nome do cliente
+                        <input type="text" value="${d.nome}" data-idx="${idx}" data-campo="nome" />
+                    </label>
+                    <label>Depoimento
+                        <textarea data-idx="${idx}" data-campo="texto">${d.texto || ""}</textarea>
+                    </label>
+                    <button type="button" data-idx="${idx}" class="btn-remover-depoimento">Remover</button>
+                `;
+                listaDepoimentos.appendChild(div);
+            });
+
+            depoimentosJsonInput.value = JSON.stringify(depoimentos);
+        }
+
+        btnAddServico.addEventListener("click", () => {
+            servicos.push({ nome: "", descricao: "", preco: "" });
+            renderServicos();
+        });
+
+        listaServicos.addEventListener("input", (e) => {
+            const idx = e.target.getAttribute("data-idx");
+            const campo = e.target.getAttribute("data-campo");
+            if (idx !== null && campo) {
+                servicos[idx][campo] = e.target.value;
+                servicosJsonInput.value = JSON.stringify(servicos);
+            }
+        });
+
+        listaServicos.addEventListener("click", (e) => {
+            if (e.target.classList.contains("btn-remover-servico")) {
+                const idx = e.target.getAttribute("data-idx");
+                servicos.splice(idx, 1);
+                renderServicos();
+            }
+        });
+
+        btnAddDepoimento.addEventListener("click", () => {
+            depoimentos.push({ nome: "", texto: "" });
+            renderDepoimentos();
+        });
+
+        listaDepoimentos.addEventListener("input", (e) => {
+            const idx = e.target.getAttribute("data-idx");
+            const campo = e.target.getAttribute("data-campo");
+            if (idx !== null && campo) {
+                depoimentos[idx][campo] = e.target.value;
+                depoimentosJsonInput.value = JSON.stringify(depoimentos);
+            }
+        });
+
+        listaDepoimentos.addEventListener("click", (e) => {
+            if (e.target.classList.contains("btn-remover-depoimento")) {
+                const idx = e.target.getAttribute("data-idx");
+                depoimentos.splice(idx, 1);
+                renderDepoimentos();
+            }
+        });
+
+        // Inicia com 1 serviço e 1 depoimento vazio
+        servicos = [{ nome: "", descricao: "", preco: "" }];
+        depoimentos = [];
+        renderServicos();
+        renderDepoimentos();
+
+        const form = document.getElementById("form-criar");
+        const msgErro = document.getElementById("msg-erro");
+        const msgSucesso = document.getElementById("msg-sucesso");
+        const linkApp = document.getElementById("link-app");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            msgErro.textContent = "";
+            msgSucesso.textContent = "";
+            linkApp.innerHTML = "";
+
+            if (!servicos.length) {
+                msgErro.textContent = "Adicione pelo menos um serviço.";
+                return;
+            }
+
+            servicosJsonInput.value = JSON.stringify(servicos);
+            depoimentosJsonInput.value = JSON.stringify(depoimentos);
+
+            const formData = new FormData(form);
+
+            try {
+                const resp = await fetch("/api/apps/", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!resp.ok) {
+                    const errData = await resp.json().catch(() => ({}));
+                    msgErro.textContent = errData.detail || "Erro ao criar app.";
+                    return;
+                }
+
+                const data = await resp.json();
+                msgSucesso.textContent = "App criado com sucesso!";
+                const url = `${window.location.origin}/app/${data.slug}`;
+                linkApp.innerHTML = `<p>Seu app está disponível em: <a href="${url}" target="_blank">${url}</a></p>`;
+            } catch (err) {
+                console.error(err);
+                msgErro.textContent = "Erro ao criar app (falha de rede).";
+            }
+        });
+    </script>
+</body>
+</html>
