@@ -6,409 +6,444 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
         :root {
-            --cor-primaria: {{ app.cor_primaria }};
-            --cor-secundaria: {{ app.cor_secundaria }};
+            --cor-primaria: {{ app.cor_primaria or "#1E88E5" }};
+            --cor-secundaria: {{ app.cor_secundaria or "#FFFFFF" }};
         }
+
         * {
             box-sizing: border-box;
-        }
-        body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
             color: #333;
         }
-        .container {
-            max-width: 960px;
+
+        .page {
+            max-width: 900px;
             margin: 0 auto;
             padding: 16px;
         }
-        header {
-            background: var(--cor-primaria);
-            color: var(--cor-secundaria);
-            padding: 28px 16px 22px;
-            text-align: center;
-            border-bottom-left-radius: 18px;
-            border-bottom-right-radius: 18px;
-        }
-        header .topo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 18px;
-        }
-        header img.logo {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid var(--cor-secundaria);
-            box-shadow: 0 0 8px rgba(0,0,0,0.25);
-        }
-        header h1 {
-            margin: 0;
-            font-size: 26px;
-        }
-        header h2 {
-            margin: 4px 0 0;
-            font-size: 17px;
-            font-weight: normal;
-        }
-        .descricao {
-            margin-top: 14px;
-            font-size: 14px;
-        }
-        .credenciais {
-            margin-top: 8px;
-            font-size: 13px;
-            opacity: 0.9;
-        }
-        .btn-whatsapp-topo {
-            margin-top: 18px;
-            display: inline-block;
-            padding: 11px 20px;
-            background: #25d366;
-            color: #fff;
-            border-radius: 26px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .subtexto-topo {
-            margin-top: 8px;
-            font-size: 12px;
-            opacity: 0.9;
-        }
-        main {
-            margin-top: 16px;
-            padding-bottom: 32px;
-        }
-        section {
+
+        .card {
             background: #fff;
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 20px;
             margin-bottom: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
         }
-        section h3 {
-            margin-top: 0;
-            margin-bottom: 8px;
+
+        .hero {
+            display: flex;
+            gap: 16px;
+            align-items: center;
         }
-        .oferta {
-            border-left: 4px solid var(--cor-primaria);
-            background: #f0f7ff;
+
+        .hero-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: #eee;
+            overflow: hidden;
+            flex-shrink: 0;
         }
-        .oferta-titulo {
-            font-size: 18px;
-            font-weight: bold;
+
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-text h1 {
+            font-size: 1.6rem;
             margin-bottom: 4px;
         }
-        .oferta-preco {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2e7d32;
-            margin-top: 8px;
+
+        .hero-text h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 6px;
         }
-        .oferta-aviso {
-            font-size: 12px;
-            color: #c62828;
-            margin-top: 4px;
-        }
-        .btn-agendar {
-            display: inline-block;
-            padding: 8px 12px;
-            background: #25d366;
-            color: #fff;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 13px;
-            margin-top: 8px;
-        }
-        .servico-card {
-            border-bottom: 1px solid #eee;
-            padding: 8px 0;
-        }
-        .servico-card:last-child {
-            border-bottom: none;
-        }
-        .servico-nome {
-            font-weight: bold;
-        }
-        .servico-preco {
-            color: #2e7d32;
-            font-weight: bold;
-            margin-top: 2px;
-        }
-        .servico-desc {
-            font-size: 14px;
-            margin-top: 2px;
-        }
-        .lista-topicos {
-            list-style: disc;
-            padding-left: 20px;
-            margin: 4px 0 0;
-            font-size: 14px;
-        }
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 8px;
-        }
-        .portfolio-grid img {
-            width: 100%;
-            border-radius: 8px;
-            object-fit: cover;
-            height: 140px;
-        }
-        .depoimento {
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #eee;
-        }
-        .depoimento:last-child {
-            border-bottom: none;
-        }
-        .depoimento-texto {
-            font-style: italic;
-        }
-        .depoimento-nome {
-            margin-top: 4px;
-            font-size: 13px;
+
+        .hero-text p {
+            font-size: 0.95rem;
             color: #555;
         }
-        .faq-pergunta {
-            font-weight: bold;
-            margin-top: 8px;
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.04);
+            font-size: 0.75rem;
+            color: #555;
+            margin-top: 4px;
         }
-        .faq-resposta {
-            font-size: 14px;
-            margin-top: 2px;
+
+        .cta-whats {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--cor-primaria);
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 999px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-top: 12px;
         }
-        footer {
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-            padding: 12px;
+
+        .cta-whats span {
+            font-size: 1.1rem;
         }
-        .contatos {
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .servicos-lista {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media (min-width: 700px) {
+            .servicos-lista {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .servico-item {
+            border-radius: 12px;
+            border: 1px solid #eee;
+            padding: 10px 12px;
+        }
+
+        .servico-titulo-preco {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .servico-titulo {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .servico-preco {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--cor-primaria);
+        }
+
+        .servico-descricao {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .servico-cta {
+            display: inline-block;
+            font-size: 0.8rem;
+            color: var(--cor-primaria);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .oferta {
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: linear-gradient(
+                135deg,
+                rgba(0, 0, 0, 0.02),
+                rgba(0, 0, 0, 0.05)
+            );
+        }
+
+        .oferta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+
+        .oferta-titulo {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .oferta-preco {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--cor-primaria);
+        }
+
+        .oferta-descricao {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .oferta-rodape {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .oferta-cta {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: var(--cor-primaria);
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 8px;
         }
-        .contatos a {
-            flex: 1;
-            min-width: 120px;
-            text-align: center;
-            padding: 8px;
-            border-radius: 20px;
+
+        .portfolio-item {
+            border-radius: 10px;
+            overflow: hidden;
+            background: #eee;
+            height: 90px;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .faq-item + .faq-item {
+            margin-top: 10px;
+        }
+
+        .faq-pergunta {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+
+        .faq-resposta {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .depo-item + .depo-item {
+            margin-top: 10px;
+        }
+
+        .depo-texto {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 4px;
+        }
+
+        .depo-nome {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .contato-links a {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 0.9rem;
+            color: var(--cor-primaria);
             text-decoration: none;
-            font-size: 13px;
-            border: 1px solid #ccc;
-            color: #333;
         }
-        .contatos a.whatsapp {
-            background: #25d366;
-            border-color: #25d366;
-            color: #fff;
-        }
-        .contatos a.instagram {
-            background: #e1306c;
-            border-color: #e1306c;
-            color: #fff;
-        }
-        .contatos a.site {
-            background: #1976d2;
-            border-color: #1976d2;
-            color: #fff;
-        }
-        @media (max-width: 600px) {
-            header .topo {
-                flex-direction: column;
-            }
+
+        .contato-endereco {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 6px;
         }
     </style>
 </head>
 <body>
-    {% set numero_whatsapp = app.whatsapp %}
-    {% set wa_base = "https://wa.me/" + numero_whatsapp %}
+<div class="page">
 
-    <header>
-        <div class="topo">
+    <!-- CABEÇALHO / HERO -->
+    <section class="card hero">
+        <div class="hero-logo">
             {% if app.logo_url %}
-                <img src="{{ app.logo_url }}" alt="Foto/Logo" class="logo">
+                <img src="{{ app.logo_url }}" alt="Logo {{ app.nome_profissional }}">
             {% endif %}
-            <div>
-                <h1>{{ app.nome_profissional }}</h1>
-                <h2>{{ app.profissao }}</h2>
-                <p class="credenciais">
-                    Formado pela OMNI Hypnosis Center e pela Universidade Brasileira de Hipnose.
-                    Certificações nacionais e internacionais em hipnoterapia clínica.
-                </p>
-            </div>
         </div>
-        <p class="descricao">
-            Ajudo pessoas a superarem depressão, ansiedade, medos e bloqueios emocionais
-            através de hipnoterapia clínica estruturada e segura.
-        </p>
-        <a class="btn-whatsapp-topo"
-           href="{{ wa_base }}?text={{ ('Olá Alexandre, vi seu app e quero saber como a hipnoterapia pode me ajudar com depressão/ansiedade.') | urlencode }}"
-           target="_blank">
-            Falar agora no WhatsApp
-        </a>
-        <p class="subtexto-topo">
-            Atendimento online e presencial (consulte disponibilidade).
-        </p>
-    </header>
+        <div class="hero-text">
+            <h1>{{ app.nome_profissional }}</h1>
+            <h2>{{ app.profissao }}</h2>
+            <p>{{ app.descricao }}</p>
 
-    <div class="container">
-        <main>
+            {% if app.endereco %}
+                <div class="badge">
+                    {{ app.endereco }}
+                </div>
+            {% endif %}
 
-            {% if app.oferta_titulo %}
-            <section class="oferta">
-                <h3>Oferta especial</h3>
-                <div class="oferta-titulo">{{ app.oferta_titulo }}</div>
-                {% if app.oferta_descricao %}
-                    <p>{{ app.oferta_descricao }}</p>
-                {% endif %}
+            {% if app.whatsapp %}
+                <a class="cta-whats"
+                   href="https://wa.me/{{ app.whatsapp | replace(' ', '') | replace('+', '') }}"
+                   target="_blank">
+                    <span>💬</span> Falar agora no WhatsApp
+                </a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- OFERTA ESPECIAL -->
+    {% if app.oferta_titulo or app.oferta_descricao or app.oferta_preco %}
+        <section class="card oferta">
+            <div class="oferta-header">
+                <div class="oferta-titulo">Oferta especial</div>
                 {% if app.oferta_preco %}
-                    <div class="oferta-preco">R$ {{ app.oferta_preco }}</div>
+                    <div class="oferta-preco">{{ app.oferta_preco }}</div>
                 {% endif %}
-                <p class="oferta-aviso">Vagas limitadas para o mês. Garanta seu atendimento com condição especial.</p>
-                <a class="btn-agendar"
-                   href="{{ wa_base }}?text={{ ('Olá Alexandre, vi sua oferta especial para depressão e quero agendar uma sessão.') | urlencode }}"
+            </div>
+            {% if app.oferta_titulo %}
+                <div style="font-weight: 600; margin-bottom: 3px;">
+                    {{ app.oferta_titulo }}
+                </div>
+            {% endif %}
+            {% if app.oferta_descricao %}
+                <p class="oferta-descricao">
+                    {{ app.oferta_descricao }}
+                </p>
+            {% endif %}
+
+            <p class="oferta-rodape">
+                Vagas limitadas. Entre em contato para mais detalhes.
+            </p>
+
+            {% if app.whatsapp %}
+                <a class="oferta-cta"
+                   href="https://wa.me/{{ app.whatsapp | replace(' ', '') | replace('+', '') }}"
                    target="_blank">
                     Quero essa oferta pelo WhatsApp
                 </a>
-            </section>
             {% endif %}
+        </section>
+    {% endif %}
 
-            <section>
-                <h3>Para quem é a hipnoterapia?</h3>
-                <p>A hipnoterapia clínica é indicada para você que deseja:</p>
-                <ul class="lista-topicos">
-                    <li>Reduzir sintomas de depressão e voltar a sentir prazer nas atividades do dia a dia;</li>
-                    <li>Controlar ansiedade, crises de pânico e pensamentos acelerados;</li>
-                    <li>Superar medos, bloqueios emocionais e traumas do passado;</li>
-                    <li>Mudar hábitos que te prejudicam (procrastinação, vícios, compulsões, etc.);</li>
-                    <li>Melhorar foco, desempenho e autoconfiança em estudos, trabalho ou esportes.</li>
-                </ul>
-            </section>
+    <!-- SERVIÇOS -->
+    {% if servicos and servicos|length > 0 %}
+        <section class="card">
+            <div class="section-title">Serviços</div>
+            <p class="section-subtitle">
+                Escolha o serviço ideal para você e agende pelo WhatsApp.
+            </p>
 
-            <section>
-                <h3>Como funciona o tratamento com hipnoterapia</h3>
-                <p>
-                    O processo é conduzido de forma ética, respeitosa e segura. Você permanece consciente
-                    o tempo todo e tem total controle durante a sessão.
-                </p>
-                <p><strong>Etapas gerais do atendimento:</strong></p>
-                <ul class="lista-topicos">
-                    <li><strong>1. Anamnese detalhada:</strong> conversa inicial para entender sua história, sintomas e objetivos.</li>
-                    <li><strong>2. Explicação da hipnose:</strong> desmistificação, esclarecimento de dúvidas e alinhamento de expectativas.</li>
-                    <li><strong>3. Sessão de hipnoterapia:</strong> técnicas específicas para ressignificar memórias e emoções associadas ao problema.</li>
-                    <li><strong>4. Plano de acompanhamento:</strong> avaliação de resultados e definição de possíveis sessões complementares.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h3>Serviços</h3>
+            <div class="servicos-lista">
                 {% for s in servicos %}
-                    <div class="servico-card">
-                        <div class="servico-nome">{{ s.nome }}</div>
+                    <div class="servico-item">
+                        <div class="servico-titulo-preco">
+                            <div class="servico-titulo">{{ s.titulo }}</div>
+                            {% if s.preco %}
+                                <div class="servico-preco">{{ s.preco }}</div>
+                            {% endif %}
+                        </div>
                         {% if s.descricao %}
-                            <div class="servico-desc">{{ s.descricao }}</div>
+                            <div class="servico-descricao">{{ s.descricao }}</div>
                         {% endif %}
-                        {% if s.preco %}
-                            <div class="servico-preco">R$ {{ s.preco }}</div>
+                        {% if app.whatsapp %}
+                            <a class="servico-cta"
+                               href="https://wa.me/{{ app.whatsapp | replace(' ', '') | replace('+', '') }}?text=Oi,%20gostaria%20de%20agendar%20o%20serviço:%20{{ s.titulo | urlencode }}"
+                               target="_blank">
+                                Agendar este serviço pelo WhatsApp
+                            </a>
                         {% endif %}
-                        <a class="btn-agendar"
-                           href="{{ wa_base }}?text={{ ('Olá Alexandre, vi seu app e quero agendar: ' + s.nome) | urlencode }}"
-                           target="_blank">
-                            Agendar este serviço pelo WhatsApp
-                        </a>
                     </div>
                 {% endfor %}
-            </section>
+            </div>
+        </section>
+    {% endif %}
 
-            {% if portfolio and portfolio|length > 0 %}
-            <section>
-                <h3>Ambiente & feedbacks de clientes</h3>
-                <p style="font-size: 14px; margin-top: 0;">
-                    Veja um pouco do ambiente de atendimento e alguns registros de feedbacks reais
-                    de pessoas que passaram pelo processo de hipnoterapia.
-                </p>
-                <div class="portfolio-grid">
-                    {% for item in portfolio %}
-                        {% if item.tipo == 'imagem' %}
+    <!-- PORTFÓLIO -->
+    {% if portfolio and portfolio|length > 0 %}
+        <section class="card">
+            <div class="section-title">Portfólio</div>
+            <p class="section-subtitle">
+                Um pouco do meu trabalho em imagens.
+            </p>
+            <div class="portfolio-grid">
+                {% for item in portfolio %}
+                    {% if item.tipo == "imagem" %}
+                        <div class="portfolio-item">
                             <img src="{{ item.url }}" alt="{{ item.titulo or 'Foto' }}">
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </section>
-            {% endif %}
-
-            {% if depoimentos and depoimentos|length > 0 %}
-            <section>
-                <h3>O que dizem meus clientes</h3>
-                {% for d in depoimentos %}
-                    <div class="depoimento">
-                        <div class="depoimento-texto">“{{ d.texto }}”</div>
-                        <div class="depoimento-nome">— {{ d.nome }}</div>
-                    </div>
+                        </div>
+                    {% endif %}
                 {% endfor %}
-            </section>
+            </div>
+        </section>
+    {% endif %}
+
+    <!-- DEPOIMENTOS -->
+    {% if depoimentos and depoimentos|length > 0 %}
+        <section class="card">
+            <div class="section-title">Depoimentos</div>
+            <p class="section-subtitle">
+                O que alguns clientes dizem sobre o atendimento.
+            </p>
+            {% for d in depoimentos %}
+                <div class="depo-item">
+                    <div class="depo-texto">“{{ d.texto }}”</div>
+                    {% if d.nome %}
+                        <div class="depo-nome">— {{ d.nome }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </section>
+    {% endif %}
+
+    <!-- CONTATO -->
+    <section class="card">
+        <div class="section-title">Contato</div>
+        <div class="contato-links">
+            {% if app.whatsapp %}
+                <a href="https://wa.me/{{ app.whatsapp | replace(' ', '') | replace('+', '') }}"
+                   target="_blank">
+                    Falar pelo WhatsApp
+                </a>
             {% endif %}
+            {% if app.instagram %}
+                <a href="{{ app.instagram }}" target="_blank">
+                    Ver no Instagram
+                </a>
+            {% endif %}
+            {% if app.site %}
+                <a href="{{ app.site }}" target="_blank">
+                    Visitar site
+                </a>
+            {% endif %}
+        </div>
+        {% if app.endereco %}
+            <div class="contato-endereco">
+                Atendimento presencial em: {{ app.endereco }}
+            </div>
+        {% endif %}
+    </section>
 
-            <section>
-                <h3>Perguntas frequentes</h3>
-                <div class="faq-pergunta">Vou ficar inconsciente na hipnose?</div>
-                <div class="faq-resposta">
-                    Não. Na hipnoterapia clínica você permanece consciente, ouvindo tudo e com total controle.
-                    A sessão é um estado de foco e relaxamento, não “perda de consciência”.
-                </div>
-
-                <div class="faq-pergunta">Quantas sessões vou precisar?</div>
-                <div class="faq-resposta">
-                    Depende do caso, mas muitos quadros têm melhora significativa em poucas sessões.
-                    Na avaliação inicial, é feito um plano personalizado de atendimento.
-                </div>
-
-                <div class="faq-pergunta">O atendimento pode ser online?</div>
-                <div class="faq-resposta">
-                    Sim. A hipnoterapia pode ser feita online com excelentes resultados, desde que você esteja
-                    em um ambiente tranquilo e com boa conexão de internet.
-                </div>
-            </section>
-
-            <section>
-                <h3>Contato</h3>
-                <div class="contatos">
-                    <a class="whatsapp"
-                       href="{{ wa_base }}?text={{ ('Olá Alexandre, vi seu app e quero falar com você sobre hipnoterapia.') | urlencode }}"
-                       target="_blank">
-                        Falar pelo WhatsApp
-                    </a>
-                    {% if app.instagram %}
-                        <a class="instagram" href="https://instagram.com/{{ app.instagram }}" target="_blank">
-                            Ver no Instagram
-                        </a>
-                    {% endif %}
-                    {% if app.site %}
-                        <a class="site" href="{{ app.site }}" target="_blank">
-                            Acessar site
-                        </a>
-                    {% endif %}
-                </div>
-                {% if app.endereco %}
-                    <p style="margin-top: 8px; font-size: 14px;">
-                        <strong>Atendimento presencial em:</strong> {{ app.endereco }}
-                    </p>
-                {% endif %}
-            </section>
-
-        </main>
-    </div>
-
-    <footer>
-        Criado com a plataforma de apps para profissionais autônomos.
-    </footer>
+</div>
 </body>
 </html>
